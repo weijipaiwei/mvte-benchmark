@@ -1,0 +1,15 @@
+# MVTE-benchmark evaluation harness
+# NOTE: run_siglip2.py needs transformers>=4.57, run_hpsv3.py needs
+# transformers==4.45.2 -- see requirements-hpsv3.txt for a second environment.
+torch>=2.1
+torchvision>=0.16
+transformers>=4.57.3
+pillow>=10.0
+numpy
+tqdm
+joblib
+openpyxl
+openai>=1.40
+dashscope
+hpsv3
+einops

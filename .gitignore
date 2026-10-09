@@ -1,0 +1,23 @@
+# model weights (download separately, see README)
+weights/
+
+# evaluation outputs
+results/
+model_outputs/
+**/results/
+**/state/
+*.jsonl
+
+# python / notebook noise
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+*.egg-info/
+
+# aggregated exports
+*.xlsx
+
+# secrets -- never commit
+.env
+*api*.txt
+*key*.txt
