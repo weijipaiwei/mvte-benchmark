@@ -1,9 +1,12 @@
 # MVTE-benchmark evaluation harness
-# NOTE: run_siglip2.py needs transformers>=4.57, run_hpsv3.py needs
-# transformers==4.45.2 -- see requirements-hpsv3.txt for a second environment.
+# Main environment: OCR, SigLIP2, traditional metrics, and VLM judges.
+# HPSv3 requires a separate environment; install requirements-hpsv3.txt there.
 torch>=2.1
 torchvision>=0.16
-transformers>=4.57.3
+transformers==4.57.3
+accelerate>=0.26.0
+torchmetrics==1.8.2
+torch-fidelity==0.3.0
 pillow>=10.0
 numpy
 tqdm
@@ -11,5 +14,4 @@ joblib
 openpyxl
 openai>=1.40
 dashscope
-hpsv3
 einops

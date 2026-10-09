@@ -26,7 +26,7 @@ Write-Host "== 4/5 background FID / SSIM / PSNR / LPIPS =="
 python evaluation/run_traditional.py --json_path $JsonPath --save_dir $SaveDir --batch_size $Batch
 if ($LASTEXITCODE -ne 0) { throw "traditional metrics step failed" }
 
-Write-Host "== 5/5 VLM judge (SC-T / SC-W / PQ); requires DASHSCOPE_API_KEY =="
+Write-Host "== 5/5 VLM judge (SC-T / SC-W / PQ); requires JUDGE_API_KEY =="
 python evaluation/run_gpt_judgement.py --json_path $JsonPath --save_dir $SaveDir --batch_size 60
 if ($LASTEXITCODE -ne 0) { throw "VLM judge step failed" }
 

@@ -60,14 +60,27 @@ huggingface-cli download google/siglip2-so400m-patch16-naflex   --local-dir weig
 huggingface-cli download MizzenAI/HPSv3                         --local-dir weights/MizzenAI__HPSv3
 ```
 
-> `run_siglip2.py` needs `transformers>=4.57` while `run_hpsv3.py` needs
-> `transformers==4.45.2`. `requirements-hpsv3.txt` pins the older stack; install
-> it in a second environment if you want to run both without switching by hand.
+The main environment uses `transformers==4.57.3` for OCR and SigLIP2.
+HPSv3 1.0.0 requires `transformers==4.45.2` and is installed **only in a separate
+environment**. Do not install both requirements files into the same environment:
+
+```bash
+conda create -n mvte-hpsv3 python=3.10 -y
+conda activate mvte-hpsv3
+pip install -r requirements-hpsv3.txt
+conda activate mvte
+```
 
 The VLM judge needs an API key:
 
 ```bash
-export DASHSCOPE_API_KEY=...        # for run_gpt_judgement.py / run_vlm_judgement.py
+export JUDGE_API_KEY="your-api-key"  # both VLM judge scripts
+```
+
+On Windows PowerShell:
+
+```powershell
+$env:JUDGE_API_KEY = "your-api-key"
 ```
 
 No key is stored anywhere in this repository.
@@ -78,8 +91,7 @@ No key is stored anywhere in this repository.
    `model_outputs/<your_model>/edited/<group>/<file>`.
 2. Create `model_outputs/<your_model>/validation.json` with the same schema as
    `benchmark/validation.json` but `edited_imgs_root` pointing at your folder.
-3. Intersect with the benchmark (drops samples you failed to produce, and is
-   reported in the paper whenever it happens):
+3. Filter the benchmark to samples with readable generated images:
 
    ```bash
    python evaluation/filter_data.py \
@@ -87,7 +99,20 @@ No key is stored anywhere in this repository.
        --json_path2 model_outputs/<your_model>/validation.json
    ```
 
-4. Run everything:
+4. Run HPSv3 in its environment first, writing to the same results directory
+   used by the other metrics:
+
+   ```bash
+   conda activate mvte-hpsv3
+   python evaluation/run_hpsv3.py \
+       --json_path model_outputs/<your_model>/validation.json \
+       --save_dir model_outputs/<your_model>/results \
+       --model_path weights/MizzenAI__HPSv3/HPSv3.safetensors
+   conda activate mvte
+   ```
+
+   Then run the main-environment pipeline. Its HPSv3 step may be skipped in
+   this environment; aggregation uses the HPSv3 results saved above:
 
    ```bash
    bash evaluation/run_all.sh model_outputs/<your_model>/validation.json \
@@ -152,9 +177,3 @@ requires attribution, which is satisfied by citing the paper below.
 
 Copyright 2026 Chenfeng Zhang. This notice covers both the code and the data
 released here; the Apache-2.0 appendix in `LICENSE` carries the same holder.
-
-## Citation
-
-TODO(before upload): insert the BibTeX of the accompanying paper once the
-journal version is accepted. Until then, the attribution required by CC-BY-4.0
-is satisfied by citing the ACM MM 2026 submission of this work.

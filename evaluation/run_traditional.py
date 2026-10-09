@@ -47,11 +47,11 @@ class ImageEvaluator:
         real_imgs = real_imgs.to(self.device)
         fake_imgs = fake_imgs.to(self.device)
 
-        # --- 1. FID (unchanged) ---
-        real_imgs_uint8 = (real_imgs * 255).clamp(0, 255).to(dtype=torch.uint8)
-        fake_imgs_uint8 = (fake_imgs * 255).clamp(0, 255).to(dtype=torch.uint8)
-        self.fid.update(real_imgs_uint8, real=True)
-        self.fid.update(fake_imgs_uint8, real=False)
+        # --- 1. FID ---
+        # normalize=True converts floats in [0, 1] to uint8 inside TorchMetrics.
+        # Pass floats directly so the images are scaled exactly once.
+        self.fid.update(real_imgs, real=True)
+        self.fid.update(fake_imgs, real=False)
         
         # --- 2. paired metrics (vectorised) ---
         batch_size = real_imgs.shape[0]

@@ -33,7 +33,7 @@ python evaluation/run_hpsv3.py --json_path "$JSON_PATH" --save_dir "$SAVE_DIR" \
 echo "== 4/5 background FID / SSIM / PSNR / LPIPS =="
 python evaluation/run_traditional.py --json_path "$JSON_PATH" --save_dir "$SAVE_DIR" --batch_size "$BATCH"
 
-echo "== 5/5 VLM judge (SC-T / SC-W / PQ); requires DASHSCOPE_API_KEY =="
+echo "== 5/5 VLM judge (SC-T / SC-W / PQ); requires JUDGE_API_KEY =="
 python evaluation/run_gpt_judgement.py --json_path "$JSON_PATH" --save_dir "$SAVE_DIR" --batch_size 60
 
 echo "== aggregating =="

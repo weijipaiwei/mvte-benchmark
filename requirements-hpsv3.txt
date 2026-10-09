@@ -1,5 +1,6 @@
-# Second environment, only needed for run_hpsv3.py (HPSv3 is pinned to the
-# older transformers API). Install with:
+# Separate environment, only needed for run_hpsv3.py. Do not combine this file
+# with requirements.txt: HPSv3 1.0.0 requires the older transformers API.
+# Install with:
 #   conda create -n mvte-hpsv3 python=3.10 -y && conda activate mvte-hpsv3
 #   pip install -r requirements-hpsv3.txt
 torch>=2.1
@@ -8,5 +9,5 @@ transformers==4.45.2
 pillow>=10.0
 numpy
 tqdm
-hpsv3
+hpsv3==1.0.0
 einops

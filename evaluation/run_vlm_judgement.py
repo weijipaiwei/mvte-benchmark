@@ -526,7 +526,8 @@ def main():
                     help="e.g. model_outputs/<your_model>")
     ap.add_argument("--judge_model", default="qwen3.8-flash")
     ap.add_argument("--base_url", default=os.getenv("JUDGE_BASE_URL", DEFAULT_BASE_URL))
-    ap.add_argument("--api_key", default=os.getenv("JUDGE_API_KEY"))
+    ap.add_argument("--api_key", default=os.getenv("JUDGE_API_KEY"),
+                    help="API key (default: JUDGE_API_KEY environment variable)")
     ap.add_argument("--out_suffix", default=None,
                     help="output dir = results_judge-<judge_model>[-<suffix>]")
     ap.add_argument("--data_root", default=VALIDATION_ROOT)
@@ -544,7 +545,7 @@ def main():
     args = ap.parse_args()
 
     if not args.api_key:
-        raise SystemExit("set the DASHSCOPE_API_KEY environment variable, or pass --api_key")
+        raise SystemExit("set the JUDGE_API_KEY environment variable, or pass --api_key")
 
     model_dir = os.path.abspath(args.model_dir)
     json_path = os.path.join(model_dir, "validation_filter.json")

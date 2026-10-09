@@ -189,7 +189,7 @@ def get_vlm_result(message_list):
     ]
 
     response = MultiModalConversation.call(
-        api_key=os.environ["DASHSCOPE_API_KEY"],
+        api_key=os.environ["JUDGE_API_KEY"],
         model="qwen3-vl-flash",
         messages=messages,
         stream=False,
@@ -208,7 +208,7 @@ def get_vlm_result(message_list):
             time.sleep(60)
             print(f'Retrying... {i+1}')
             response = MultiModalConversation.call(
-                api_key=os.environ["DASHSCOPE_API_KEY"],
+                api_key=os.environ["JUDGE_API_KEY"],
                 model="qwen3-vl-flash",
                 messages=messages,
                 stream=False,
@@ -759,5 +759,8 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default=os.path.join(REPO_ROOT, "results"))
     parser.add_argument('--batch_size', type=int, default=8)
     args = parser.parse_args()
+
+    if not os.getenv("JUDGE_API_KEY"):
+        parser.error("Set the JUDGE_API_KEY environment variable before running the VLM judge.")
 
     run_evaluation(args.json_path, args.save_dir, args.batch_size)
